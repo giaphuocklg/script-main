@@ -68,10 +68,9 @@ local function verifyKey(key)
     return false, "Connection timeout - Server not responding after " .. maxRetries .. " attempts"
 end
 
-local function MainScript()
-    -- [[ CORE SERVICES ]]
-    local TeleportService = game:GetService("TeleportService")
-    local RunService = game:GetService("RunService")
+-- [[ CORE SERVICES ]]
+local TeleportService = game:GetService("TeleportService")
+local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CollectionService = game:GetService("CollectionService")
@@ -167,6 +166,10 @@ local AvailableIslands = {}
 for i, _ in pairs(IslandData) do table.insert(AvailableIslands, i) end
 
 -- [[ CORE UTILITIES (LITERAL PORT) ]]
+local firesignal = firesignal or function() end
+local fireclickdetector = fireclickdetector or function() end
+local firetouchinterest = firetouchinterest or function() end
+
 function CommF_(...)
     return ReplicatedStorage.Remotes.CommF_:InvokeServer(...)
 end
@@ -188,6 +191,14 @@ function EquipTool(toolName)
     if lp.Backpack:FindFirstChild(toolName) then
         lp.Character.Humanoid:EquipTool(lp.Backpack:FindFirstChild(toolName))
     end
+end
+
+function GetPlayerList()
+    local Names = {}
+    for _, v in pairs(game:GetService("Players"):GetPlayers()) do
+        table.insert(Names, v.Name)
+    end
+    return Names
 end
 
 function Check_Tool_Remote(name)
@@ -229,11 +240,12 @@ function Attack(target, cond)
     if not target or not target:FindFirstChild("HumanoidRootPart") then return end
     repeat task.wait()
         TP(target.HumanoidRootPart.CFrame * CFrame.new(0, 5, 0))
-        if _G.at then
-            -- Fast Attack is handled in its own loop
-        end
     until not target.Parent or target.Humanoid.Health <= 0 or (cond and cond())
 end
+
+local function MainScript()
+
+-- [[ CORE UTILITIES (LITERAL PORT) ]]
 
 -- [[ FAST ATTACK LOGIC ]]
 local CombatUtil = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("CombatUtil"))
@@ -394,9 +406,9 @@ GachaSec:AddToggle("RandomFruit", {Title = "Random Fruit", Default = false, Call
 GachaSec:AddToggle("RandomBones", {Title = "Random Bones", Default = false, Callback = function(v) _G.RandomBones = v end})
 
 local MoveSec = Tabs.Local:AddRightGroupbox("Movement & Visuals")
-MoveSec:AddSlider("WS", {Title = "WalkSpeed", Min = 20, Max = 350, Default = 70, Callback = function(v) _G.WSValue = v end})
+MoveSec:AddSlider({Title = "WalkSpeed", Min = 20, Max = 350, Default = 70, Callback = function(v) _G.WSValue = v end})
 MoveSec:AddToggle("WS_Enable", {Title = "Enable Speed", Default = false, Callback = function(v) _G.WalkS = v end})
-MoveSec:AddSlider("JP", {Title = "JumpPower", Min = 50, Max = 500, Default = 50, Callback = function(v) _G.JPValue = v end})
+MoveSec:AddSlider({Title = "JumpPower", Min = 50, Max = 500, Default = 50, Callback = function(v) _G.JPValue = v end})
 MoveSec:AddToggle("JP_Enable", {Title = "Enable JumpPower", Default = false, Callback = function(v) _G.JumpP = v end})
 MoveSec:AddToggle("WalkWt", {Title = "Walk On Water", Default = false, Callback = function(v) _G.WalkWt = v end})
 
