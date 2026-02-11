@@ -37,9 +37,9 @@ local function verifyKey(key)
 end
 
 local key = getgenv().CheckKey
-if not key or key == "" then lp:Kick("\n[RISE HUB SECURITY]\n\nNO KEY PROVIDED\n\nPlease set your key:\ngetgenv().CheckKey = 'YOUR-KEY'") return end
+if not key or key == "" then lp:Kick("\n[KEMU HUB SECURITY]\n\nNO KEY PROVIDED\n\nPlease set your key:\ngetgenv().CheckKey = 'YOUR-KEY'") return end
 local success, message = verifyKey(key)
-if not success then lp:Kick("\n[RISE HUB SECURITY]\n\nVERIFICATION FAILED!\n\nReason: " .. tostring(message)) return end
+if not success then lp:Kick("\n[KEMU HUB SECURITY]\n\nVERIFICATION FAILED!\n\nReason: " .. tostring(message)) return end
 
 -- [[ ORIGINAL SCRIPT START ]]
 
@@ -571,8 +571,8 @@ old_tp = LPH_JIT_MAX(function(...)
 
     tweenActive = true
     okeybae(char, false)
-    local bv = root:FindFirstChild("risefanboi") or Instance.new("BodyVelocity")
-    bv.Name, bv.MaxForce, bv.Velocity, bv.Parent = "risefanboi", Vector3.new(1e6, 1e6, 1e6), Vector3.zero, root
+    local bv = root:FindFirstChild("kemufanboi") or Instance.new("BodyVelocity")
+    bv.Name, bv.MaxForce, bv.Velocity, bv.Parent = "kemufanboi", Vector3.new(1e6, 1e6, 1e6), Vector3.zero, root
 
     lastTweenTarget = target
     currentTween = TweenService:Create(root, TweenInfo.new(d_final / 350, Enum.EasingStyle.Linear), {CFrame = target})
@@ -585,7 +585,7 @@ old_tp = LPH_JIT_MAX(function(...)
                 if tick() - lastTPTime > 2 or not lp.Character or not lp.Character:FindFirstChild("Humanoid") or lp.Character.Humanoid.Health <= 0 then
                     if currentTween then currentTween:Cancel() end
                     local r = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
-                    if r and r:FindFirstChild("risefanboi") then r.risefanboi:Destroy() end
+                    if r and r:FindFirstChild("kemufanboi") then r.kemufanboi:Destroy() end
                     if lp.Character then okeybae(lp.Character, true) end
                     tweenActive, _G.CleaningMonitor = false, false
                     break
@@ -679,7 +679,7 @@ function TP(pos, ...)
     if root then
         local dist = (targetPos - root.Position).Magnitude
         if dist < 250 then
-            if root:FindFirstChild("risefanboi") then root.risefanboi:Destroy() end
+            if root:FindFirstChild("kemufanboi") then root.kemufanboi:Destroy() end
             if currentTween then currentTween:Cancel() end
             if lp.Character then
                 for _, p in pairs(lp.Character:GetDescendants()) do
@@ -1156,20 +1156,20 @@ ReplicatedStorage = game.ReplicatedStorage
             Quests = require(ReplicatedStorage:WaitForChild("Quests"))
             function CreateCacheFolder()
               local AllSpawnPoint = {}
-              if not workspace:FindFirstChild("rise") then
+              if not workspace:FindFirstChild("Kemu Hub") then
                 local Folder = Instance.new("Folder", workspace)
-                Folder.Name = "rise"
+                Folder.Name = "Kemu Hub"
               end
-              repeat wait() until workspace:FindFirstChild("rise")
-              local MobSpawns = Instance.new("Folder", workspace.rise)
+              repeat wait() until workspace:FindFirstChild("Kemu Hub")
+              local MobSpawns = Instance.new("Folder", workspace["Kemu Hub"])
               MobSpawns.Name = "MobSpawns"
-              for i, v in next, workspace.rise.MobSpawns:GetChildren() do
+              for i, v in next, workspace["Kemu Hub"].MobSpawns:GetChildren() do
                 v:Destroy()
               end
               for i, v in next, workspace._WorldOrigin.EnemySpawns:GetChildren() do
                 local niger = v:Clone()
                 niger.Name = niger.Name:gsub(" %pLv. %d+%p", "")
-                niger.Parent = workspace.rise.MobSpawns
+                niger.Parent = workspace["Kemu Hub"].MobSpawns
               end
               local FarmLevelMob = {}
               for i, v in next, Quests do
@@ -1200,7 +1200,7 @@ ReplicatedStorage = game.ReplicatedStorage
               end
               for i, v in next, AllSpawnPoint do
                 if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") then
-                  local Part = Instance.new("Part", workspace.rise.MobSpawns)
+                  local Part = Instance.new("Part", workspace["Kemu Hub"].MobSpawns)
                   Part.Name = v.Name
                   Part.CanCollide = false
                   Part.Transparency = 1
@@ -1209,7 +1209,7 @@ ReplicatedStorage = game.ReplicatedStorage
                   Part.CFrame = v.HumanoidRootPart.CFrame
                 elseif v:IsA("Part") then
                   local a = v:Clone()
-                  a.Parent = workspace.rise.MobSpawns
+                  a.Parent = workspace["Kemu Hub"].MobSpawns
                 end
               end
             end
@@ -1217,7 +1217,7 @@ ReplicatedStorage = game.ReplicatedStorage
           local plr = game.Players.LocalPlayer
           function TweenToMon(Name)
           local Parts = {}
-          for _, v in ipairs(workspace.rise.MobSpawns:GetChildren()) do
+          for _, v in ipairs(workspace["Kemu Hub"].MobSpawns:GetChildren()) do
             if v.Name == Name then
               table.insert(Parts, v)
             end
@@ -1994,7 +1994,7 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local CoreGui = game:GetService("CoreGui")
 local lp = Players.LocalPlayer
-local RISE_THEME = {
+local KEMU_THEME = {
     TextFont = Enum.Font.GothamBold,
     TextColor = Color3.fromRGB(255, 255, 255),
     AccentColor = Color3.fromRGB(0, 255, 215),
@@ -2003,11 +2003,11 @@ local RISE_THEME = {
 }
 local function AddEsp(BoatModel)
     if not BoatModel or not BoatModel.PrimaryPart then return end
-    if BoatModel.PrimaryPart:FindFirstChild("RiseESP") then return end
+    if BoatModel.PrimaryPart:FindFirstChild("KemuESP") then return end
     local hum = BoatModel:FindFirstChild("Humanoid")
     if not hum then return end
     local bg = Instance.new("BillboardGui")
-    bg.Name = "RiseESP"
+    bg.Name = "KemuESP"
     bg.Adornee = BoatModel.PrimaryPart
     bg.Size = UDim2.new(0, 100, 0, 50)
     bg.StudsOffset = Vector3.new(0, 5, 0)
@@ -3033,110 +3033,54 @@ lp.Idled:Connect(function()
 end)
 
 loadstring(game:HttpGet('https://raw.githubusercontent.com/asher-realrise/project/refs/heads/main/stat_inlitizing.lua'))()
-wind = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
-local Window = wind:CreateWindow({
-    Title = "Rise Hub | Evo True V2 - by realrise#0 ",
-    Icon = "zap",
-    Author = "Version: <font color=\"#FFD700\">PREMIUM</font> [ discord.gg/URZ5qcVPwc ]",
-    Folder = "bet",
-    Size = UDim2.fromOffset(580, 460),
-    MinSize = Vector2.new(400, 300),
-    MaxSize = Vector2.new(850, 560),
-    Transparent = true,
-    Theme = "Dark",
-    Resizable = true,
-    SideBarWidth = 200,
-    BackgroundImageTransparency = 0.42,
-    HideSearchBar = true,
-    ScrollBarEnabled = false,
-    User = {
-        Enabled = true,
-        Anonymous = false,
-        Callback = function()
-            print("hello " .. game.Players.LocalPlayer.Name)
-        end,
-    },
+local Library = loadstring(game:HttpGet("https://files.catbox.moe/y9pqox.lua"))()
+local Window = Library:CreateWindow({
+    Title = "Kemu Hub",
+    Subtitle = " | Evo True V2",
+    Image = "rbxassetid://112485471724320"
 })
 
-wind:SetTheme("Dark")
-local page2 = Window:Tab({Title = "Shop Tab",Icon = "shopping-basket"})
-local page3 = Window:Tab({Title = "Setting Farm",Icon = "cog"})
-local page4 = Window:Tab({Title = "Basic Farm",Icon = "sword"})
-local page5 = Window:Tab({Title = "Sub Farm",Icon = "swords"})
-local mltab = Window:Tab({Title = "Auto Melee",Icon = "hand-fist"})
-local page6 = Window:Tab({Title = "Local Player",Icon = "person-standing"})
-local pvp = Window:Tab({Title = "PVP Tab",Icon = "speech"})
-local raid = Window:Tab({Title = "Raiding",Icon = "heart"})
-local page11 = Window:Tab({Title = "Race V4",Icon = "dna"})
-local page12 = Window:Tab({Title = "Dungeon",Icon = "rabbit"})
-local page13 = Window:Tab({Title = "Traveling",Icon = "plane"})
-local page7 = Window:Tab({Title = "Sea Event",Icon = "fish"})
-local page8 = Window:Tab({Title = "Volcano",Icon = "mountain-snow", Locked = true})
-local page9 = Window:Tab({Title = "Dojo Quest",Icon = "ribbon", Locked = true})
-local page10 = Window:Tab({Title = "Leviathan",Icon = "sparkles", Locked = true})
-page2:Select()
+local ShopTab = Window:AddTab("Shop")
+local ShopSection = ShopTab:AddLeftGroupbox("General Shop")
 
---local skidder_if = page1:Section({ Title = "Hello World",})
---UI Settings
---
-Window:EditOpenButton({
-    Title = "Click Here To Open",
-    Icon = "sparkles",
-    CornerRadius = UDim.new(1),
-    StrokeThickness = 2,
-    Color = ColorSequence.new(
-    Color3.fromHex("#BC13FE"),
-    Color3.fromHex("#FFFFFF")
-),
-    OnlyMobile = false,
-    Enabled = true,
-    Draggable = false,
-})
-
--- Shop
-page2:Button({
+ShopSection:AddButton({
     Title = "Buy Cyborg Race",
-    Desc = "",
-    Locked = false,
     Callback = function()
         CommF_("CyborgTrainer", "Buy")
     end
 })
 
-page2:Section({ Title = "Crafting & Scrolls" })
-
-page2:Button({
+local ScrollSection = ShopTab:AddRightGroupbox("Crafting & Scrolls")
+ScrollSection:AddButton({
     Title = "Craft Common Scroll",
-    Desc = "",
     Callback = function()
         CommF_("CraftItem", "Craft", "Common Scroll")
     end
 })
 
-page2:Button({
+ScrollSection:AddButton({
     Title = "Craft Mythical Scroll",
     Callback = function()
         CommF_("CraftItem", "Craft", "Mythical Scroll")
     end
 })
 
-page2:Button({
+ScrollSection:AddButton({
     Title = "Craft Leviathan Crown",
     Callback = function()
         CommF_("CraftItem", "Craft", "LeviathanCrown")
     end
 })
 
-page2:Button({
+ScrollSection:AddButton({
     Title = "Craft Beast Hunter",
     Callback = function()
         CommF_("CraftItem", "Craft", "BeastHunter")
     end
 })
 
-page2:Section({ Title = "Race & Stats Custom" })
-
-page2:Button({
+local CustomSection = ShopTab:AddLeftGroupbox("Race & Stats Custom")
+CustomSection:AddButton({
     Title = "Reroll Race (Fragments)",
     Callback = function()
         CommF_("BlackbeardReward", "Reroll", "1")
@@ -3144,14 +3088,14 @@ page2:Button({
     end
 })
 
-page2:Button({
+CustomSection:AddButton({
     Title = "Get Ghoul Race",
     Callback = function()
         CommF_("Ectoplasm", "Change", 4)
     end
 })
 
-page2:Button({
+CustomSection:AddButton({
     Title = "Reset Stats",
     Callback = function()
         CommF_("BlackbeardReward", "Refund", "1")
@@ -3159,46 +3103,44 @@ page2:Button({
     end
 })
 
-page2:Section({ Title = "Abilities" })
-
-page2:Button({
+local AbilitySection = ShopTab:AddRightGroupbox("Abilities")
+AbilitySection:AddButton({
     Title = "Buy Geppo (Jump)",
     Callback = function()
         CommF_("BuyHaki", "Geppo")
     end
 })
 
-page2:Button({
+AbilitySection:AddButton({
     Title = "Buy Buso (Haki)",
     Callback = function()
         CommF_("BuyHaki", "Buso")
     end
 })
 
-page2:Button({
+AbilitySection:AddButton({
     Title = "Buy Soru",
     Callback = function()
         CommF_("BuyHaki", "Soru")
     end
 })
 
-page2:Section({ Title = "Weapons Shop" })
-
-page2:Button({
+local WeaponSection = ShopTab:AddLeftGroupbox("Weapons Shop")
+WeaponSection:AddButton({
     Title = "Buy Soul Cane",
     Callback = function()
         CommF_("BuyItem", "Soul Cane")
     end
 })
 
-page2:Button({
+WeaponSection:AddButton({
     Title = "Buy Bisento",
     Callback = function()
         CommF_("BuyItem", "Bisento")
     end
 })
 
-page2:Button({
+WeaponSection:AddButton({
     Title = "Buy Kabucha",
     Callback = function()
         CommF_("BlackbeardReward", "Slingshot", "1")
@@ -3206,57 +3148,49 @@ page2:Button({
     end
 })
 
--- Setting
-page3:Toggle({Title = "Use Sword",Desc = "Change Melee > Sword",
-Icon = "play",Type = "Toggle",
-Value = false,
-Callback = function(x)
-_G.USESWORD = x
-end})
+local SettingTab = Window:AddTab("Setting Farm")
+local FarmSetup = SettingTab:AddLeftGroupbox("Farming Configuration")
 
-page3:Toggle({Title = "Use M1",Desc = "Attack M1",
-Icon = "play",Type = "Toggle",
-Value = false,
-Callback = function(x)
-_G.USEDF = x
-end})
 
-page3:Toggle({Title = "Use Gun",Desc = "dont enable cuz isnt support",
-Icon = "play",Type = "Toggle",
-Value = false,
-Callback = function(x)
-_G.UseGun = x
-end})
+local FarmConfig = SettingTab:AddLeftGroupbox("Farming Configuration")
+FarmConfig:AddToggle("UseSword", {
+    Title = "Use Sword",
+    Default = false,
+    Callback = function(v) _G.USESWORD = v end
+})
+FarmConfig:AddToggle("UseM1", {
+    Title = "Use M1",
+    Default = false,
+    Callback = function(v) _G.USEDF = v end
+})
+FarmConfig:AddToggle("UseGun", {
+    Title = "Use Gun",
+    Default = false,
+    Callback = function(v) _G.UseGun = v end
+})
 
-page3:Section({ Title = "Yourself" })
-
-page3:Toggle({Title = "Auto Activate V3",Desc = "",
-Icon = "play",Type = "Toggle",
-Value = false,
-Callback = function(x)
-_G.EnableV3 = x
-end})
-
-page3:Toggle({Title = "Auto Activate V4",Desc = "",
-Icon = "play",Type = "Toggle",
-Value = false,
-Callback = function(x)
-_G.EnableV4 = x
-end})
-
-page3:Toggle({Title = "Auto Summon Dough King",Desc = "if have cup, enable it",
-Icon = "play",Type = "Toggle",
-Value = false,
-Callback = function(x)
-_G.SpawnDoughKing = x
-end})
-
-page3:Toggle({Title = "Walk On Water",Desc = "it may or may not cuz lag depending on ur device power",
-Icon = "play",Type = "Toggle",
-Value = _G.WalkWt or false,
-Callback = function(x)
-_G.WalkWt = x
-     task.spawn(function()
+local SelfMod = SettingTab:AddRightGroupbox("Yourself")
+SelfMod:AddToggle("AutoV3", {
+    Title = "Auto Activate V3",
+    Default = false,
+    Callback = function(v) _G.EnableV3 = v end
+})
+SelfMod:AddToggle("AutoV4", {
+    Title = "Auto Activate V4",
+    Default = false,
+    Callback = function(v) _G.EnableV4 = v end
+})
+SelfMod:AddToggle("SummonDoughKing", {
+    Title = "Auto Summon Dough King",
+    Default = false,
+    Callback = function(v) _G.SpawnDoughKing = v end
+})
+SelfMod:AddToggle("WalkWater", {
+    Title = "Walk On Water",
+    Default = _G.WalkWt or false,
+    Callback = function(v)
+        _G.WalkWt = v
+        task.spawn(function()
             local map = workspace:FindFirstChild("Map")
             local water = map and map:FindFirstChild("WaterBase-Plane")
             if water then
@@ -3269,183 +3203,126 @@ _G.WalkWt = x
                 end
             end
         end)
-end})
+    end
+})
 
-page3:Section({ Title = "Your Screen" })
+local ScreenMod = SettingTab:AddLeftGroupbox("Your Screen")
+ScreenMod:AddToggle("HideNotify", {
+    Title = "Hide Notification",
+    Default = false,
+    Callback = function(v) _G.HideNotify = v end
+})
+ScreenMod:AddToggle("WhiteScreen", {
+    Title = "White Screen",
+    Default = false,
+    Callback = function(v) _G.WhiteScreen = v end
+})
 
-page3:Toggle({Title = "Hide Notification",Desc = "",
-Icon = "play",Type = "Toggle",
-Value = false,
-Callback = function(x)
-_G.HideNotify = x
-end})
+local FarmTab = Window:AddTab("Basic Farm")
+local BasicFarmBox = FarmTab:AddLeftGroupbox("Farming")
 
-page3:Toggle({Title = "White Screen",Desc = "",
-Icon = "play",Type = "Toggle",
-Value = false,
-Callback = function(x)
-_G.WhiteScreen = x
-end})
 
 --FARMING
 
-farmmode = page4:Dropdown({
+BasicFarmBox:AddDropdown("FarmMode", {
     Title = "Select Farm Mode",
-    Desc = "",
     Values = { "Farm Level", "Farm Bones", "Farm Katakuri" },
-    Value = "Farm Level",
-    Callback = function(x) 
-        SelectMode = x
-    end
+    Default = "Farm Level",
+    Callback = function(v) SelectMode = v end
 })
 
-page4:Toggle({
+BasicFarmBox:AddToggle("StartFarm", {
     Title = "Start Farm",
-    Desc = "",
-    Icon = "play",
-    Type = "Toggle",
-    Value = false,
-    Callback = function(x)
-        _G.StartFarm = x
-    end
+    Default = false,
+    Callback = function(v) _G.StartFarm = v end
 })
-page4:Section({ Title = "i dont know" })
-page4:Toggle({
+
+local BossUtil = FarmTab:AddRightGroupbox("Boss & World Events")
+BossUtil:AddToggle("AutoTyrant", {
     Title = "Auto Kill Tyrant Of The Skies",
-    Desc = "",
-    Icon = "play",
-    Type = "Toggle",
-    Value = false,
-    Callback = function(x)
-        _G.AutoKillTyrant = x
-    end
+    Default = false,
+    Callback = function(v) _G.AutoKillTyrant = v end
 })
-
-page4:Toggle({
+BossUtil:AddToggle("SummonTyrant", {
     Title = "Auto Summon Tyrant",
-    Desc = "",
-    Icon = "play",
-    Type = "Toggle",
-    Value = false,
-    Callback = function(x)
-        _G.AutoSummonTyrant = x
-    end
+    Default = false,
+    Callback = function(v) _G.AutoSummonTyrant = v end
 })
-
-
-page4:Toggle({
+BossUtil:AddToggle("NearbyFarm", {
     Title = "Aura Farm",
-    Desc = "farm nearby mob stud 1000",
-    Icon = "play",
-    Type = "Toggle",
-    Value = false,
-    Callback = function(x)
-        _G.NearbyFarm = x
-    end
-})
-page4:Section({ Title = "quest sea servicd" })
-
-page4:Toggle({
-    Title = "Auto Dressrosa",
-    Desc = "make sure u alr reach lv 700",
-    Icon = "play",
-    Type = "Toggle",
-    Value = false,
-    Callback = function(x)
-        _G.AutoSea2 = x
-    end
+    Default = false,
+    Callback = function(v) _G.NearbyFarm = v end
 })
 
-page4:Toggle({
-    Title = "Auto Zou",
-    Desc = "same dressrosa make sure u alr reach lv 1500",
-    Icon = "play",
-    Type = "Toggle",
-    Value = false,
-    Callback = function(x)
-        _G.AutoSea3 = x
-    end
+local SeaQuest = FarmTab:AddLeftGroupbox("Sea Quests")
+SeaQuest:AddToggle("AutoSea2", {
+    Title = "Auto Dressrosa (Sea 2)",
+    Default = false,
+    Callback = function(v) _G.AutoSea2 = v end
+})
+SeaQuest:AddToggle("AutoSea3", {
+    Title = "Auto Zou (Sea 3)",
+    Default = false,
+    Callback = function(v) _G.AutoSea3 = v end
 })
 
-page4:Section({ Title = "money service" })
-
-page4:Toggle({
+local ChestUtil = FarmTab:AddRightGroupbox("Chest & Item Service")
+ChestUtil:AddToggle("AutoChestTween", {
     Title = "Auto Chest < Tween >",
-    Desc = "very safety",
-    Value = false,
-    Callback = function(x) _G.AutoChest = x end
+    Default = false,
+    Callback = function(v) _G.AutoChest = v end
 })
-
-page4:Toggle({
+ChestUtil:AddToggle("AutoChestTP", {
     Title = "Auto Chest < Teleport >",
-    Desc = "ultra risk",
-    Value = false,
-    Callback = function(x) _G.AutoChestTP = x end
+    Default = false,
+    Callback = function(v) _G.AutoChestTP = v end
 })
-
-page4:Toggle({
+ChestUtil:AddToggle("StopIfItem", {
     Title = "Stop If Have Item",
-    Desc = "key darkbeard, cup, etc, idk",
-    Value = false,
-    Callback = function(x) _G.StopItem = x end
+    Default = false,
+    Callback = function(v) _G.StopItem = v end
 })
 
-page4:Section({ Title = "fruit service" })
-
-page4:Toggle({
+local FruitMat = FarmTab:AddLeftGroupbox("Fruit & Material service")
+FruitMat:AddToggle("CollectFruit", {
     Title = "Tween Collect Fruit",
-    Desc = "",
-    Value = false,
-    Callback = function(x) _G.CollectFruit = x end
+    Default = false,
+    Callback = function(v) _G.CollectFruit = v end
 })
-
-page4:Toggle({
+FruitMat:AddToggle("StoreFruit", {
     Title = "Auto Store Fruit",
-    Desc = "Automatically store fruits in inventory",
-    Value = false,
-    Callback = function(x) _G.StoreFruit = x end
+    Default = false,
+    Callback = function(v) _G.StoreFruit = v end
+})
+FruitMat:AddDropdown("SelectMaterial", {
+    Title = "Select Material",
+    Values = MaterialList or {"Bones", "Fish Tail", "Magma Ore"}, -- Fallback
+    Callback = function(v) SelectMetarial = v end
+})
+FruitMat:AddToggle("StartMaterial", {
+    Title = "Start Farm Material",
+    Default = _G.StartMetarial or false,
+    Callback = function(v) _G.StartMetarial = v end
 })
 
-page4:Section({ Title = "metarial service" })
-
-page4:Dropdown({
-    Title = "Select Metarial",
-    Values = MaterialList,
-    Callback = function(x) SelectMetarial = x end
-})
-
-page4:Toggle({
-    Title = "Start Farm Metarial",
-    Value = _G.StartMetarial or false,
-    Callback = function(x) _G.StartMetarial = x end
-})
-
-page4:Section({ Title = "haki" })
-
-page4:Toggle({
+local HakiMod = FarmTab:AddRightGroupbox("Haki & Observation")
+HakiMod:AddToggle("AutoObs", {
     Title = "Auto Observation",
-    Desc = "",
-    Icon = "play",
-    Type = "Toggle",
-    Value = false,
-    Callback = function(x)
-        _G.AutoHaki = x
-    end
+    Default = false,
+    Callback = function(v) _G.AutoHaki = v end
+})
+HakiMod:AddToggle("HakiHop", {
+    Title = "HOP for Auto Observation",
+    Default = false,
+    Callback = function(v) _G.HakiHop = v end
 })
 
-page4:Toggle({
-    Title = "HOP for Auto Observation",
-    Desc = "",
-    Icon = "play",
-    Type = "Toggle",
-    Value = false,
-    Callback = function(x)
-        _G.HakiHop = x
-    end
-})
+local SubFarmTab = Window:AddTab("Sub Farm")
+local EliteBox = SubFarmTab:AddLeftGroupbox("|| Elite Status: Initializing ||")
+
 
 -- PAGE SUB FARM
-elitestat = page5:Section({ Title = "|| Elite Status: Inlitizing ||" })
+local EliteLabel = EliteBox:AddLabel("Status: Initializing...")
 task.spawn(function()
     local eliti = {"Diablo", "Deandre", "Urban"}  
     while task.wait(1) do
@@ -3457,359 +3334,216 @@ task.spawn(function()
             end
         end
         if checkfl then
-            elitestat:SetTitle("|| Elite Status: SPAWNED! ||")
+            EliteLabel:SetText("Status: SPAWNED!")
         else
-            elitestat:SetTitle("|| Elite Status: NOT FOUND! ||")
+            EliteLabel:SetText("Status: NOT FOUND!")
         end
     end
 end)
 
-page5:Section({ Title = "Sea 3 Features" })
-
-page5:Toggle({
+local Sea3Feat = SubFarmTab:AddRightGroupbox("Sea 3 Features")
+Sea3Feat:AddToggle("AutoElite", {
     Title = "Auto Elite",
-    Desc = "",
-    Icon = "play",
-    Type = "Toggle",
-    Value = false,
-    Callback = function(x)
-        _G.AutoElite = x
-    end
+    Default = false,
+    Callback = function(v) _G.AutoElite = v end
 })
-
-page5:Toggle({
+Sea3Feat:AddToggle("AutoYama", {
     Title = "Auto Yama",
-    Value = false,
-    Callback = function(x) _G.AutoYama = x end
+    Default = false,
+    Callback = function(v) _G.AutoYama = v end
 })
-
-page5:Toggle({
+Sea3Feat:AddToggle("AutoTushita", {
     Title = "Auto Tushita",
-    Value = false,
-    Callback = function(x) _G.AutoTushita = x end
+    Default = false,
+    Callback = function(v) _G.AutoTushita = v end
 })
-
-page5:Toggle({
+Sea3Feat:AddToggle("AutoIndra", {
     Title = "Auto Kill Rip Indra",
-    Value = false,
-    Callback = function(x) _G.AutoIndra = x end
+    Default = false,
+    Callback = function(v) _G.AutoIndra = v end
 })
-
-page5:Toggle({
+Sea3Feat:AddToggle("AutoDoughKing", {
     Title = "Auto Dough King",
-    Desc = "only enable if you already have a cup",
-    Value = false,
-    Callback = function(x) _G.AutoDoughKing = x end
+    Default = false,
+    Callback = function(v) _G.AutoDoughKing = v end
 })
-
-page5:Toggle({
+Sea3Feat:AddToggle("AutoReaper", {
     Title = "Auto Soul Reaper",
-    Value = false,
-    Callback = function(x) _G.AutoReaper = x end
+    Default = false,
+    Callback = function(v) _G.AutoReaper = v end
 })
-
-page5:Toggle({
+Sea3Feat:AddToggle("AutoRaidCastle", {
     Title = "Auto Raid Castle",
-    Desc = "",
-    Icon = "play",
-    Type = "Toggle",
-    Value = false,
-    Callback = function(x)
-        _G.AutoRaidCastle = x
-    end
+    Default = false,
+    Callback = function(v) _G.AutoRaidCastle = v end
 })
-page5:Section({ Title = "Sea 2 Features" })
-page5:Toggle({
+
+local Sea2Feat = SubFarmTab:AddLeftGroupbox("Sea 2 Features")
+Sea2Feat:AddToggle("AutoFactory", {
     Title = "Auto Factory",
-    Desc = "",
-    Icon = "play",
-    Type = "Toggle",
-    Value = false,
-    Callback = function(x)
-        _G.AutoFactory = x
-    end
+    Default = false,
+    Callback = function(v) _G.AutoFactory = v end
 })
-
-page5:Toggle({
+Sea2Feat:AddToggle("AutoEcto", {
     Title = "Auto Ectoplasm",
-    Value = false,
-    Callback = function(x) _G.AutoEcto = x end
+    Default = false,
+    Callback = function(v) _G.AutoEcto = v end
 })
-
-page5:Toggle({
+Sea2Feat:AddToggle("AutoDarkbeard", {
     Title = "Auto Kill Darkbeard",
-    Value = false,
-    Callback = function(x) _G.AutoDarkbeard = x end
+    Default = false,
+    Callback = function(v) _G.AutoDarkbeard = v end
 })
-		
-page5:Toggle({
+Sea2Feat:AddToggle("AutoRengoku", {
     Title = "Auto Rengoku",
-    Value = false,
-    Callback = function(x) _G.AutoRengoku = x end
+    Default = false,
+    Callback = function(v) _G.AutoRengoku = v end
 })
 
-page5:Section({ Title = "Sea 1 Features" })
-
-page5:Toggle({
+local Sea1Feat = SubFarmTab:AddRightGroupbox("Sea 1 Features")
+Sea1Feat:AddToggle("AutoPole", {
     Title = "Auto Pole V1",
-    Value = false,
-    Callback = function(x) _G.AutoPoleV1 = x end
+    Default = false,
+    Callback = function(v) _G.AutoPoleV1 = v end
 })
-
-page5:Toggle({
+Sea1Feat:AddToggle("AutoSaber", {
     Title = "Auto Saber",
-    Value = false,
-    Callback = function(x) _G.AutoSaber = x end
+    Default = false,
+    Callback = function(v) _G.AutoSaber = v end
 })
 
-page6:Toggle({
-    Title = "Auto Enable Observation",
-    Desc = "",
-    Value = false,
-    Callback = function(x) _G.AutoEnableKen = x end
+local LocalTab = Window:AddTab("Local Player")
+local MainGP = LocalTab:AddLeftGroupbox("GP Service")
+
+
+MainGP:AddSlider("WalkSpeed", {
+    Title = "WalkSpeed", Min = 20, Max = 350, Default = 70,
+    Callback = function(v) _G.WSValue = v end
+})
+MainGP:AddToggle("EnableWS", {
+    Title = "Enable WalkSpeed", Default = false,
+    Callback = function(v) _G.WalkS = v end
 })
 
-page6:Toggle({
-    Title = "Auto Rejoin",
-    Desc = "Automatically reconnect if disconnected",
-    Value = false,
-    Callback = function(x) _G.AutoRejoin = x end
+MainGP:AddSlider("JumpPower", {
+    Title = "JumpPower", Min = 50, Max = 500, Default = 50,
+    Callback = function(v) _G.JPValue = v end
+})
+MainGP:AddToggle("EnableJP", {
+    Title = "Enable JumpPower", Default = false,
+    Callback = function(v) _G.JumpP = v end
 })
 
-page6:Section({ Title = "GP Service" })
-
-local SliderWS = page6:Slider({
-    Title = "WalkSpeed",
-    Desc = "min50 max500",
-    Step = 1,
-    Value = {
-        Min = 20,
-        Max = 350,
-        Default = 70,
-    },
-    Callback = function(value)
-        _G.WSValue = value
-    end
+local MiscSer = LocalTab:AddRightGroupbox("Misc Service")
+MiscSer:AddToggle("AutoKen", {
+    Title = "Auto Enable Observation", Default = false,
+    Callback = function(v) _G.AutoEnableKen = v end
 })
-
-page6:Toggle({
-    Title = "Enable WalkSpeed",
-    Desc = "",
-    Value = false,
-    Callback = function(x) 
-        _G.WalkS = x 
-    end
+MiscSer:AddToggle("AutoRejoin", {
+    Title = "Auto Rejoin", Default = false,
+    Callback = function(v) _G.AutoRejoin = v end
 })
-
-local SliderJP = page6:Slider({
-    Title = "JumpPower",
-    Desc = "min50 max 500",
-    Step = 1,
-    Value = {
-        Min = 50,
-        Max = 500,
-        Default = 50,
-    },
-    Callback = function(value)
-        _G.JPValue = value
-    end
-})
-
-page6:Toggle({
-    Title = "Enable JumpPower",
-    Desc = "",
-    Value = false,
-    Callback = function(x) 
-        _G.JumpP = x 
-    end
-})
-
-local defaultWS = 20
-local defaultJP = 50
-task.spawn(function()
-    while task.wait() do
-        pcall(function()
-            local char = game.Players.LocalPlayer.Character
-            local hum = char and char:FindFirstChild("Humanoid")            
-            if hum then
-                if _G.WalkS then
-                    hum.WalkSpeed = _G.WSValue or 70
-                else
-                    if hum.WalkSpeed ~= defaultWS and not _G.WalkS then
-                        hum.WalkSpeed = defaultWS
-                    end
-                end
-                if _G.JumpP then
-                    hum.UseJumpPower = true
-                    hum.JumpPower = _G.JPValue or 50
-                else
-                    if hum.JumpPower ~= defaultJP and not _G.JumpP then
-                        hum.JumpPower = defaultJP
-                    end
-                end
-            end
-        end)
-    end
-end)
-mt = getrawmetatable(game)
-oldIndex = mt.__index
-oldNewIndex = mt.__newindex
-setreadonly(mt, false)
-mt.__newindex = newcclosure(function(t, k, v)
-    if checkcaller() then return oldNewIndex(t, k, v) end
-    if _G.WalkS and t:IsA("Humanoid") and k == "WalkSpeed" then
-        return
-    end
-    if _G.JumpP and t:IsA("Humanoid") and k == "JumpPower" then
-        return
-    end
-    return oldNewIndex(t, k, v)
-end)
-setreadonly(mt, true)
-
-page6:Section({ Title = "HOP Service" })
-page6:Button({
+MiscSer:AddButton({
     Title = "HOP Server Low",
-    Callback = function()
-        Server_Hop("niga")
-    end
+    Callback = function() Server_Hop("kemu_hub_hop") end
 })
-page6:Section({ Title = "Gacha Service" })
 
-bonecheck = page6:Section({ Title = "Your Bone: 0" })
+local GachaSer = LocalTab:AddLeftGroupbox("Gacha & Bones")
+local BoneLabel = GachaSer:AddLabel("Your Bone: 0")
 task.spawn(function()
     while task.wait(2) do
         local count = GetCountMaterials("Bones")
-        bonecheck:SetTitle("Your Bone: " .. tostring(count))
+        BoneLabel:SetText("Your Bone: " .. tostring(count))
     end
 end)
-
-page6:Toggle({
-    Title = "Random Fruit",
-    Desc = "",
-    Value = false,
-    Callback = function(x) _G.RandomFruit = x end
+GachaSer:AddToggle("RandomFruit", {
+    Title = "Random Fruit", Default = false,
+    Callback = function(v) _G.RandomFruit = v end
+})
+GachaSer:AddToggle("RandomBones", {
+    Title = "Random Bones", Default = false,
+    Callback = function(v) _G.RandomBones = v end
 })
 
-page6:Toggle({
-    Title = "Random Bones",
-    Desc = "",
-    Value = false,
-    Callback = function(x) _G.RandomBones = x end
-})
+local EspSer = LocalTab:AddRightGroupbox("ESP Service")
+EspSer:AddToggle("EspFruit", { Title = "ESP Fruit", Default = false, Callback = function(v) _G.ESPFruit = v end })
+EspSer:AddToggle("EspPlayers", { Title = "ESP Players", Default = false, Callback = function(v) _G.ESPPlayer = v end })
+EspSer:AddToggle("EspChest", { Title = "ESP Chest", Default = false, Callback = function(v) _G.ESPChest = v end })
+EspSer:AddToggle("EspMirage", { Title = "ESP Mirage", Default = false, Callback = function(v) _G.ESPMirage = v end })
+EspSer:AddToggle("EspDealer", { Title = "ESP Advanced Fruit Dealer", Default = false, Callback = function(v) _G.ESPNpcMirage = v end })
 
-page6:Section({ Title = "ESP Service" })
+local StatSer = LocalTab:AddLeftGroupbox("Stats Service")
+StatSer:AddToggle("StatMelee", { Title = "Auto Upgrade Melee", Default = false, Callback = function(v) _G.StatMelee = v end })
+StatSer:AddToggle("StatHealth", { Title = "Auto Upgrade Health", Default = false, Callback = function(v) _G.StatHealth = v end })
+StatSer:AddToggle("StatSword", { Title = "Auto Upgrade Sword", Default = false, Callback = function(v) _G.StatSword = v end })
+StatSer:AddToggle("StatGun", { Title = "Auto Upgrade Gun", Default = false, Callback = function(v) _G.StatGun = v end })
+StatSer:AddToggle("StatFruit", { Title = "Auto Upgrade Fruit", Default = false, Callback = function(v) _G.StatFruit = v end })
 
-page6:Toggle({Title = "ESP Fruit", Value = false, Callback = function(x) _G.ESPFruit = x end})
-page6:Toggle({Title = "ESP Players", Value = false, Callback = function(x) _G.ESPPlayer = x end})
-page6:Toggle({Title = "ESP Chest", Value = false, Callback = function(x) _G.ESPChest = x end})
-page6:Toggle({Title = "ESP Mirage", Value = false, Callback = function(x) _G.ESPMirage = x end})
-page6:Toggle({Title = "ESP Advanced Fruit Dealer", Value = false, Callback = function(x) _G.ESPNpcMirage = x end})
-
-page6:Section({ Title = "Stats Service" })
-
-page6:Toggle({Title = "Auto Upgrade Melee", Desc = "", Value = false, Callback = function(x) _G.StatMelee = x end})
-page6:Toggle({Title = "Auto Upgrade Health", Desc = "", Value = false, Callback = function(x) _G.StatHealth = x end})
-page6:Toggle({Title = "Auto Upgrade Sword", Desc = "", Value = false, Callback = function(x) _G.StatSword = x end})
-page6:Toggle({Title = "Auto Upgrade Gun", Desc = "", Value = false, Callback = function(x) _G.StatGun = x end})
-page6:Toggle({Title = "Auto Upgrade Fruit", Desc = "", Value = false, Callback = function(x) _G.StatFruit = x end})
+local V4Tab = Window:AddTab("Race V4 & Raid")
+local V4Box = V4Tab:AddLeftGroupbox("Race V4 Service")
 
 
-page11:Toggle({
+
+V4Box:AddToggle("AutoV1V3", {
     Title = "Auto Upgrade V1-V3",
-    Desc = "Support: Human, Mink Cyborg\nUnSupport: Fish, Ghoul, Angle",
-    Value = false,
-    Callback = function(x) _G.AutoV1V3 = x end
+    Default = false,
+    Callback = function(v) _G.AutoV1V3 = v end
 })
-
-page11:Section({ Title = "Mirage Service" })
-
-page11:Toggle({
-    Title = "Fully Pull Lever < Need Mirage >",
-    Desc = "Go To Mirage -> Look Moon -> Get Gear",
-    Value = false,
-    Callback = function(x) _G.AutoGetGear = x end
-})
-
-page11:Toggle({
-    Title = "Tween To Mirage",
-    Desc = "just tween to mirage",
-    Value = false,
-    Callback = function(x) _G.GoToMirage = x end
-})
-
-page11:Section({ Title = "Trainning Service" })
-
-fullytrial = page11:Toggle({
+V4Box:AddToggle("AutoTrial", {
     Title = "Auto Trial | Buy Gear",
-    Desc = "",
-    Value = false,
-    Callback = function(x) _G.AutoTrialV4 = x end
+    Default = false,
+    Callback = function(v) _G.AutoTrialV4 = v end
 })
 
---DUNGEON
+local MirageSer = V4Tab:AddRightGroupbox("Mirage Service")
+MirageSer:AddToggle("PullLever", {
+    Title = "Fully Pull Lever < Need Mirage >",
+    Default = false,
+    Callback = function(v) _G.AutoGetGear = v end
+})
+MirageSer:AddToggle("TweenMirage", {
+    Title = "Tween To Mirage",
+    Default = false,
+    Callback = function(v) _G.GoToMirage = v end
+})
 
-page12:Toggle({
+local DungeonSer = V4Tab:AddLeftGroupbox("Dungeon Service")
+DungeonSer:AddToggle("AutoDungeon", {
     Title = "Auto Dungeon",
-    Desc = "Fully Dungeon",
-    Value = false,
-    Callback = function(x) _G.AutoDungeon = x end
+    Default = false,
+    Callback = function(v) _G.AutoDungeon = v end
 })
-
-page12:Toggle({
+DungeonSer:AddToggle("JoinDungeon", {
     Title = "Auto Join Dungeon",
-    Desc = "Auto join in the lobby dungeon\nmake sure u have enough energy",
-    Value = false,
-    Callback = function(x) _G.AutoJoinDungeon = x end
+    Default = false,
+    Callback = function(v) _G.AutoJoinDungeon = v end
 })
-
-page12:Toggle({
+DungeonSer:AddToggle("SelectCards", {
     Title = "Auto Select Cards (Buff)",
-    Desc = "Health>Defense>Armor>Melee (or Sword if Use Sword on)",
-    Value = false,
-    Callback = function(x) _G.AutoPickCard = x end
+    Default = false,
+    Callback = function(v) _G.AutoPickCard = v end
 })
 
---TRAVEL
-page13:Button({
-    Title = "Travel Old World",
-    Callback = function()
-        CommF_("TravelMain")
-    end
-})
+local TravelTab = Window:AddTab("Travel & Sea")
+local TravelSer = TravelTab:AddLeftGroupbox("Traveling Service")
 
-page13:Button({
-    Title = "Travel Dressrosa",
-    Callback = function()
-        CommF_("TravelDressrosa")
-    end
-})
 
-page13:Button({
-    Title = "Travel Zou",
-    Callback = function()
-        CommF_("TravelZou")
-    end
-})
-
-page13:Section({ Title = "Travelling Service" })
-page13:Dropdown({
+TravelSer:AddButton({ Title = "Travel Old World", Callback = function() CommF_("TravelMain") end })
+TravelSer:AddButton({ Title = "Travel Dressrosa", Callback = function() CommF_("TravelDressrosa") end })
+TravelSer:AddButton({ Title = "Travel Zou", Callback = function() CommF_("TravelZou") end })
+TravelSer:AddDropdown("SelectIsland", {
     Title = "Select Island",
-    Values = AvailableIslands,
-    Callback = function(x) SelectIsland = x end
+    Values = AvailableIslands or {"Loading..."},
+    Callback = function(v) SelectIsland = v end
 })
-
-page13:Toggle({
+TravelSer:AddToggle("StartTravel", {
     Title = "Start Tween Travel",
-    Desc = "",
-    Value = false,
-    Callback = function(x) _G.StartTravel = x end
+    Default = false,
+    Callback = function(v) _G.StartTravel = v end
 })
 
---Sea Event
-
-local rodstat = page7:Section({ Title = "Fishing Stat: Waiting for rod...." })
-
+local FishSer = TravelTab:AddRightGroupbox("Fishing Service")
+local RodStatusLabel = FishSer:AddLabel("Status: Waiting for rod...")
 task.spawn(function()
     while task.wait(1) do
         local char = lp.Character
@@ -3821,182 +3555,128 @@ task.spawn(function()
                 local loc = FishingSettings.LastCastLocation
                 local text = "Rod State: " .. tostring(state)
                 if loc then
-                    text = text .. "\nPos: " .. math.floor(loc.X) .. ", " .. math.floor(loc.Y) .. ", " .. math.floor(loc.Z)
+                    text = text .. " (" .. math.floor(loc.X) .. "," .. math.floor(loc.Y) .. "," .. math.floor(loc.Z) .. ")"
                 end
-                rodstat:SetTitle(text)
+                RodStatusLabel:SetText(text)
             else
-                rodstat:SetTitle("Rod State: Not Equipped")
+                RodStatusLabel:SetText("Rod State: Not Equipped")
             end
         else
-            rodstat:SetTitle("Rod State: Waiting for selection...")
+            RodStatusLabel:SetText("Rod State: Waiting for selection...")
         end
     end
 end)
 
-page7:Dropdown({
+FishSer:AddDropdown("SelectRod", {
     Title = "Select Rod",
     Values = {"Fishing Rod","Gold Rod","Shark Rod","Shell Rod","Treasure Rod","Shark (Corrupted)","Shell (Celestial)"},
-    Callback = function(x) FishingSettings.SelectedRod = x end
+    Callback = function(v) FishingSettings.SelectedRod = v end
 })
-page7:Dropdown({
+FishSer:AddDropdown("SelectBait", {
     Title = "Select Bait",
     Values = {"Basic Bait","Kelp Bait","Good Bait","Abyssal Bait","Frozen Bait","Epic Bait","Carnivore Bait"},
-    Callback = function(x) FishingSettings.SelectedBait = x end
+    Callback = function(v) FishingSettings.SelectedBait = v end
 })
-
-page7:Button({
+FishSer:AddButton({
     Title = "Open Fish Index",
-    Callback = function()
-        lp:WaitForChild("PlayerGui"):SetAttribute("FishIndexVisible", true)
-    end})
-
-
-page7:Toggle({
+    Callback = function() lp:WaitForChild("PlayerGui"):SetAttribute("FishIndexVisible", true) end
+})
+FishSer:AddToggle("StartFishing", {
     Title = "Auto Fishing",
-    Desc = "",
-    Value = false,
-    Callback = function(x) 
-        _G.StartFishsing = x 
-    end
+    Default = false,
+    Callback = function(v) _G.StartFishsing = v end
 })
 
-page7:Section({ Title = "Leviathan Service" })
-leviastat = page7:Section({ Title = "|| Bribe Status : Inlitizing... ||" })
-page7:Button({
+
+local SeaEventSer = TravelTab:AddLeftGroupbox("Sea Event Service")
+local LeviaStatus = SeaEventSer:AddLabel("Bribe Status: Initializing...")
+SeaEventSer:AddButton({
     Title = "Leviathan Bribe",
     Callback = function()
-        noob = CommF_("InfoLeviathan", "2")
-        leviastat:SetTitle(noob)
-end})
-local inf_levia = CFrame.new(-100000, 31, 37016.25)
-local buy_boat_cf = CFrame.new(-16202.62, 9.30, 473.52)
-page7:Dropdown({
-    Title = "Select Boat [ Leviathan ]",
+        local res = CommF_("InfoLeviathan", "2")
+        LeviaStatus:SetText("Bribe: " .. tostring(res))
+    end
+})
+SeaEventSer:AddDropdown("LeviaBoat", {
+    Title = "Select Boat [Leviathan]",
     Values = {'Dinghy', 'PirateSloop', 'PirateBrigade', 'PirateGrandBrigade', 'MarineSloop', 'MarineBrigade', 'MarineGrandBrigade', 'Beast Hunter','Lantern','Guardian','Grand Brigade','Sloop','The Sentinel'},
-    Callback = function(x) 
-        _G.SelectBoatLeviathan = x 
-    end
+    Callback = function(v) _G.SelectBoatLeviathan = v end
 })
-page7:Toggle({
+SeaEventSer:AddToggle("FindLevia", {
     Title = "Auto Find Leviathan",
-    Desc = "make sure alr enough 5 players\nand its ur boat",
-    Value = false,
-    Callback = function(x) 
-        _G.FindLeviathan = x 
-        if not x then stopboat() end
+    Default = false,
+    Callback = function(v) 
+        _G.FindLeviathan = v 
+        if not v then stopboat() end
     end
 })
-page7:Toggle({
+SeaEventSer:AddToggle("TweenFrozen", {
     Title = "Tween Frozen Dimension",
-    Desc = "make sure island alr spawn",
-    Value = false,
-    Callback = function(x) 
-        TP(worigin.Locations:FindFirstChild("Frozen Dimension").CFrame *CFrame.new(0,250,0))
-    end
+    Default = false,
+    Callback = function() TP(workspace._WorldOrigin.Locations:FindFirstChild("Frozen Dimension").CFrame * CFrame.new(0,250,0)) end
 })
-page7:Toggle({
+SeaEventSer:AddToggle("EspBoat", {
     Title = "ESP Your Boat",
-    Value = false,
-    Callback = function(x) 
-        _G.ESPBoat = x       
+    Default = false,
+    Callback = function(v) 
+        _G.ESPBoat = v       
         if _G.ESPBoat then
             task.spawn(function()
                 while _G.ESPBoat do
                     local myBoat = checkboat()
-                    if myBoat then
-                        AddEsp(myBoat)
-                    end
+                    if myBoat then AddEsp(myBoat) end
                     task.wait(1)
                 end
             end)
         else
             for _, v in pairs(workspace.Boats:GetDescendants()) do
-                if v.Name == "RiseESP" then v:Destroy() end
+                if v.Name == "KemuESP" then v:Destroy() end
             end
         end
     end
 })
 
-page7:Section({ Title = "Prehistoric Service" })
-page7:Toggle({
+local IslandEventSer = TravelTab:AddRightGroupbox("Island Event Service")
+IslandEventSer:AddToggle("FindPrehistoric", {
     Title = "Auto Find Prehistoric",
-    Desc = "",
-    Value = false,
-    Callback = function(x) 
-        _G.Prehistoric = x 
-        if not x then stopboat() end
+    Default = false,
+    Callback = function(v) 
+        _G.Prehistoric = v 
+        if not v then stopboat() end
     end
 })
-page7:Toggle({
-    Title = "Tween Prehistoric Island",
-    Desc = "make sure island alr spawn",
-    Value = false,
-    Callback = function(x) 
-        TP(worigin.Locations:FindFirstChild("Prehistoric Island").CFrame *CFrame.new(0,250,0))
-    end
-})
-
-
-page7:Section({ Title = "Azure Ember Service" })
-page7:Toggle({
+IslandEventSer:AddToggle("FindKitsune", {
     Title = "Auto Find Kitsune Island",
-    Desc = "",
-    Value = false,
-    Callback = function(x) 
-        _G.FindKit = x
-    end
+    Default = false,
+    Callback = function(v) _G.FindKit = v end
 })
-
-_G.SetAzureEmber = 10 
-page7:Slider({
-    Title = "Set Azure Ember",
-    Description = "",
-    Min = 1,
-    Max = 25,
-    Default = 10,
-    Callback = function(v)
-        _G.SetAzureEmber = v
-    end
+IslandEventSer:AddSlider("AzureCount", {
+    Title = "Set Azure Ember Count", Min = 1, Max = 25, Default = 10,
+    Callback = function(v) _G.SetAzureEmber = v end
 })
-
-
-page7:Toggle({
+IslandEventSer:AddToggle("CollectEmber", {
     Title = "Collect Azure Ember",
-    Desc = "",
-    Value = false,
-    Callback = function(x) 
-        _G.EmberCollect = x
-    end
+    Default = false,
+    Callback = function(v) _G.EmberCollect = v end
 })
 
-page7:Section({ Title = "Mirage Service" })
-
-page7:Toggle({
+local MirageEventSer = TravelTab:AddLeftGroupbox("Mirage Island Service")
+MirageEventSer:AddToggle("FindMirage", {
     Title = "Auto Find Mirage",
-    Desc = "",
-    Value = false,
-    Callback = function(x) 
-        _G.FindMirage = x
-    end
+    Default = false,
+    Callback = function(v) _G.FindMirage = v end
 })
-
-page7:Toggle({
+MirageEventSer:AddToggle("HighMirage", {
     Title = "Tween Highest Mirage",
-    Desc = "",
-    Value = false,
-    Callback = function(x) 
-        _G.HighMirage = x
-    end
+    Default = false,
+    Callback = function(v) _G.HighMirage = v end
+})
+MirageEventSer:AddToggle("BlueGear", {
+    Title = "Tween Blue Gear",
+    Default = false,
+    Callback = function(v) _G.BlueGear = v end
 })
 
-page7:Toggle({
-    Title = "Tween Blue Gear",
-    Desc = "",
-    Value = false,
-    Callback = function(x) 
-        _G.BlueGear = x
-    end
-})
 
 
 local function FindBlueGear()
@@ -4151,7 +3831,7 @@ local function SetEventMode(modeName, state)
         for _, mode in ipairs(allModes) do
             _G[mode] = (mode == modeName)
         end
-        print("[ Rise ApI ] switch " .. modeName)
+        print("[ Kemu Hub ] switch " .. modeName)
     else
         _G[modeName] = false
         stopboat()
@@ -4203,99 +3883,45 @@ end)
 
 
 
-page7:Section({ Title = "Sea Event Service [ Not Working Now ]" })
-
-local SeaSettings = {
-    SelectedBoat = "Dinghy",
-    SelectZone = "Level 1",
-    AutoPrehistoric = false,
-    Targets = {},
-    Zones = {
-        ["Level 1"] = CFrame.new(-21998.375, 30, -682.309),
-        ["Level 2"] = CFrame.new(-26779.5215, 30, -822.858),
-        ["Level 3"] = CFrame.new(-31171.957, 30, -2256.9377),
-        ["Level 4"] = CFrame.new(-34054.6875, 30.2187, -2560.1201),
-        ["Level 5"] = CFrame.new(-38887.5547, 30, -2162.9902),
-        ["Level 6"] = CFrame.new(-44541.7617, 30, -1244.8584),
-        ["Infinite"] = CFrame.new(-100000, 31, 37016.25)
-    }
-}
-
-
-page7:Dropdown({
+-- Sea Event Service Placeholder
+local SeaEventFuture = TravelTab:AddLeftGroupbox("Future Sea Events")
+SeaEventFuture:AddLabel("Status: Not Working Now")
+SeaEventFuture:AddDropdown("BoatSelect", {
     Title = "Select Boat",
     Values = {'Dinghy', 'PirateSloop', 'PirateBrigade', 'PirateGrandBrigade', 'MarineSloop', 'MarineBrigade', 'MarineGrandBrigade', 'Beast Hunter','Lantern','Guardian','Grand Brigade','Sloop','The Sentinel'},
-    Callback = function(x) SeaSettings.SelectedBoat = x end
+    Callback = function(v) print("Placeholder selected: " .. v) end
+})
+SeaEventFuture:AddToggle("StartSeaPlaceholder", {
+    Title = "Start Sea Event (Coming Soon)",
+    Default = false,
+    Callback = function() print("Coming soon...") end
 })
 
---[[findprr = page7:Toggle({
-    Title = "Auto Find Prehistoric",
-    Value = false,
-    Callback = function(x) print("not work not release") end
-})]]
-
-page7:Dropdown({
-    Title = "Zone Select",
-    Values = {'Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5', 'Level 6', 'Infinite'},
-    Callback = function(x) SeaSettings.SelectZone = x end
-})
-
-page7:Dropdown({
-    Title = "Select Entity",
-    Values = {"Shark", "Piranha", "Fish Crew Member", "Terrorshark", "FishBoat", "PirateBrigade", "PirateGrandBrigade", "Sea Beast"},
-    Multi = true,
-    Callback = function(x) SeaSettings.Targets = x end
-})
-
-startsea = page7:Toggle({
-    Title = "Start Sea Event",
-    Value = false,
-    Callback = function(x) print("not work not release") end
-})
-
--- PVP
-_G.SelectedPlayer = nil
 local function GetPlayerList()
     local list = {}
     for _, v in ipairs(game:GetService("Players"):GetPlayers()) do
-        if v ~= lp then
-            table.insert(list, v.Name)
-        end
+        if v ~= lp then table.insert(list, v.Name) end
     end
     return list
 end
 
-local selectpl = pvp:Dropdown({
+local PlayerSelect = PvpSer:AddDropdown("SelectedPlayer", {
     Title = "Select Player",
     Values = GetPlayerList(),
-    Callback = function(x) 
-        _G.SelectedPlayer = x 
-    end
+    Callback = function(v) _G.SelectedPlayer = v end
 })
 
-pvp:Button({
+PvpSer:AddButton({
     Title = "Refresh Player List",
     Callback = function()
         local newList = GetPlayerList()
-        selectpl:Refresh(newList, true)
+        PlayerSelect:SetValues(newList)
     end
 })
 
-pvp:Toggle({
-    Title = "Spectate Player",
-    Value = false,
-    Callback = function(x)
-        _G.SpectatePlayer = x
-    end
-})
+PvpSer:AddToggle("SpectatePlr", { Title = "Spectate Player", Default = false, Callback = function(v) _G.SpectatePlayer = v end })
+PvpSer:AddToggle("TweenPlr", { Title = "Tween To Player", Default = false, Callback = function(v) _G.TeleportToPlayer = v end })
 
-pvp:Toggle({
-    Title = "Tween To Player",
-    Value = false,
-    Callback = function(x)
-        _G.TeleportToPlayer = x
-    end
-})
 task.spawn(function()
     while task.wait() do
         pcall(function()
@@ -4318,144 +3944,34 @@ task.spawn(function()
 end)
 
 
--- RAIDING
+local RaidSer = CombatTab:AddRightGroupbox("Raid Service")
+local RaidTimerLabel = RaidSer:AddLabel("| Raid Timer: Idle |")
+local RaidIslandLabel = RaidSer:AddLabel("| Raid Island: Idle |")
 
-local function isRaidActive()
-    return lp.PlayerGui.Main.TopHUDList.RaidTimer.Visible
-end
-local function getRaidIsland()
-    for i = 5, 1, -1 do
-        if workspace.Map.RaidMap:FindFirstChild("RaidIsland"..i) then
-            return i
-        end
-    end
-    return 0
-end
-
-local Raidslist = {}
-local success, RaidsModule = pcall(function() return require(game.ReplicatedStorage.Raids) end)
-
-if success and RaidsModule then
-    for _, v in pairs(RaidsModule.raids) do 
-        table.insert(Raidslist, tostring(v)) 
-    end
-    if RaidsModule.advancedRaids then
-        for _, v in pairs(RaidsModule.advancedRaids) do 
-            table.insert(Raidslist, tostring(v)) 
-        end
-    end
-else
-    Raidslist = {"Flame", "Ice", "Quake", "Light", "Dark", "Spider", "Rumble", "Magma", "Buddha", "Sand"} -- Dự phòng nếu require lỗi
-end
-
-
-task.spawn(function()
-    while task.wait(1) do
-        if _G.UnstoreFruit then
-            pcall(function()
-                local hasFruit = false
-                for _, v in pairs(lp.Backpack:GetChildren()) do if v.Name:find("Fruit") then hasFruit = true break end end
-                for _, v in pairs(lp.Character:GetChildren()) do if v.Name:find("Fruit") then hasFruit = true break end end
-                if not hasFruit then
-                    local fruits = CommF_("getInventoryFruits")
-                    for _, v in pairs(fruits) do
-                        if v.Price <= _G.SetPriceFruit then
-                            CommF_("LoadFruit", v.Name)
-                            break
-                        end
-                    end
-                end
-            end)
-        end
-    end
-end)
-
-task.spawn(function()
-    while task.wait(0.5) do
-        if _G.AutoLaw then
-            pcall(function()
-                local order = workspace.Enemies:FindFirstChild("Order") or game.ReplicatedStorage:FindFirstChild("Order")              
-                if not order then
-                    if not lp.Backpack:FindFirstChild("Microchip") and not lp.Character:FindFirstChild("Microchip") then
-                        CommF_("BlackbeardReward", "Microchip", "1")
-                        CommF_("BlackbeardReward", "Microchip", "2")
-                    else
-                        local button = workspace.Map.CircleIsland.RaidSummon.Button.Main.ClickDetector
-                        if button then fireclickdetector(button) end
-                    end
-                else
-                    local boss = workspace.Enemies:FindFirstChild("Order")
-                    if boss and boss:FindFirstChild("HumanoidRootPart") then
-                        Attack(boss, function()
-                            return not _G.AutoLaw or not boss.Parent or boss.Humanoid.Health <= 0
-                        end)
-                    else
-                        TP(CFrame.new(-6217, 28, -5053))
-                    end
-                end
-            end)
-        end
-    end
-end)
-
-task.spawn(function()
-    while task.wait(0.5) do
-        if _G.StartRaid then
-            pcall(function()
-                if isRaidActive() then
-                    local enemy = nil
-                    for _, v in pairs(workspace.Enemies:GetChildren()) do
-                        if v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
-                            enemy = v
-                            break
-                        end
-                    end
-                    if enemy then
-                        Attack(enemy, function()
-                            return not _G.StartRaid or not isRaidActive() or not enemy.Parent or enemy.Humanoid.Health <= 0
-                        end)
-                    else
-                        local currentIsland = getRaidIsland()
-                        if currentIsland > 0 then
-                            local islandPart = workspace._WorldOrigin.Locations:FindFirstChild("Island "..currentIsland)
-                            if islandPart then
-                                TP(islandPart.CFrame * CFrame.new(0, 50, 0))
-                            end
-                        end
-                    end
-                else
-                    if not lp.Backpack:FindFirstChild("Special Microchip") and not lp.Character:FindFirstChild("Special Microchip") then
-                        CommF_("RaidsTrainer", "Verify")
-                    else
-                        if sea2 then
-                            local btn = workspace.Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector
-                            if btn then fireclickdetector(btn) end
-                        elseif sea3 then
-                            CommF_("requestEntrance", Vector3.new(-5083, 314, -3175))
-                            task.wait(0.5)
-                            local btn = workspace.Map["Boat Castle"].RaidSummon2.Button.Main.ClickDetector
-                            if btn then fireclickdetector(btn) end
-                        end
-                    end
-                end
-            end)
-        end
-        if _G.AutoAwakening then
-            CommF_("Awakener", "Awaken")
-        end
-    end
-end)
+RaidSer:AddDropdown("SelectChip", {
+    Title = "Select Chip",
+    Values = Raidslist or {"Flame", "Ice", "Quake", "Light", "Dark", "Spider", "Rumble", "Magma", "Buddha", "Sand"},
+    Callback = function(v) _G.SelectedChip = v end
+})
+RaidSer:AddSlider("FruitPrice", {
+    Title = "Fruit Price", Min = 1, Max = 10000000, Default = 25000,
+    Callback = function(v) _G.SetPriceFruit = v end
+})
+RaidSer:AddToggle("UnstoreFruit", { Title = "Auto Get Fruit", Default = false, Callback = function(v) _G.UnstoreFruit = v end })
+RaidSer:AddToggle("StartRaid", { Title = "Start Auto Raiding", Default = false, Callback = function(v) _G.StartRaid = v end })
+RaidSer:AddToggle("AutoAwaken", { Title = "Auto Awakening", Default = false, Callback = function(v) _G.AutoAwakening = v end })
+RaidSer:AddToggle("AutoLaw", { Title = "Auto Law [Raid]", Default = false, Callback = function(v) _G.AutoLaw = v end })
 
 task.spawn(function()
     while task.wait(0.5) do
         pcall(function()
             if isRaidActive() then
-                TimeRaidParagraph:SetDesc(lp.PlayerGui.Main.TopHUDList.RaidTimer.Text)
+                RaidTimerLabel:SetText("| Timer: " .. lp.PlayerGui.Main.TopHUDList.RaidTimer.Text .. " |")
                 local currentIsland = getRaidIsland()
-                niha1:SetTitle("| Current Island Tracking |\nIsland: " .. (currentIsland > 0 and currentIsland or "Loading"))
+                RaidIslandLabel:SetText("| Island: " .. (currentIsland > 0 and tostring(currentIsland) or "Loading") .. " |")
             else
-                niha:SetTitle("| Raid Timer Tracking |\n| Inlitizing... |")
-                niha1:SetTitle("| Current Island Tracking |\n| Idle... |")
+                RaidTimerLabel:SetText("| Raid Timer: Idle |")
+                RaidIslandLabel:SetText("| Raid Island: Idle |")
             end
         end)
     end
@@ -4471,110 +3987,22 @@ _G.AutoLaw = false
 
 
 
-raid:Toggle({
-    Title = "Tween to Lab",
-    Desc = "sea2 or 3 same func",
-    Value = false,
-    Callback = function(x)
-        if sea2 then
-            TP(CFrame.new(-6438.7, 250.6, -4501.5))
-        elseif sea3 then
-            TP(CFrame.new(-5017.4, 314.8, -2823.0))
-        end
-    end
-})
+local MeleeSer = CombatTab:AddLeftGroupbox("Auto Melee Service")
+MeleeSer:AddToggle("GetSphm", { Title = "Auto Get SuperHuman", Default = false, Callback = function(v) _G.AutoSphm = v end })
+MeleeSer:AddToggle("GetDS", { Title = "Auto Get Death Step", Default = false, Callback = function(v) _G.AutoDeathStep = v end })
+MeleeSer:AddToggle("GetSMK", { Title = "Auto Get Sharkman Karate", Default = false, Callback = function(v) _G.AutoSharkman = v end })
+MeleeSer:AddToggle("GetEC", { Title = "Auto Get Electric Claw", Default = false, Callback = function(v) _G.ElecClaw = v end })
+MeleeSer:AddToggle("GetDT", { Title = "Auto Get Dragon Talon", Default = false, Callback = function(v) _G.DraTalon = v end })
+MeleeSer:AddToggle("GetGH", { Title = "Auto Get GodHuman", Default = false, Callback = function(v) _G.AutoGH = v end })
 
-niha = raid:Section({ Title = "| Raid Timer Tracking |\n| Inlitizing... |" })
-niha1 = raid:Section({ Title = "| Current Island Tracking |\n| Inlitizing... |" })
-
-
-raid:Dropdown({
-    Title = "Select Chip",
-    Values = Raidslist,
-    Callback = function(x) _G.SelectedChip = x end
-})
-local nigahhh = raid:Slider({
-    Title = "Fruit Price",
-    Desc = "",
-    Step = 1,
-    Value = {
-        Min = 1,
-        Max = 10000000,
-        Default = 25000,
-    },
-    Callback = function(value)
-        _G.SetPriceFruit = value
-    end
-})
-
-raid:Toggle({
-    Title = "Auto Get Fruit",
-    Desc = "will get fruit from ur inventory\nmake sure u alr select price",
-    Value = false,
-    Callback = function(x) _G.UnstoreFruit = x end
-})
-
-raid:Toggle({
-    Title = "Start Auto Rading",
-    Desc = "Killing mob for complete raid\nor idk hehe",
-    Value = false,
-    Callback = function(x) _G.StartRaid = x end
-})
-
-raid:Toggle({
-    Title = "Auto Awakening",
-    Desc = "this func will auto talk with npc to awakening fruit\nmake sure ure select correct chip",
-    Value = false,
-    Callback = function(x) _G.AutoAwakening = x end
-})
-
-raid:Section({ Title = "Law Service" })
-
-raid:Toggle({
-    Title = "Auto Law [ Raid ] ",
-    Desc = "this func will auto buy chip\nmake sure ure enough fragment",
-    Value = false,
-    Callback = function(x) _G.AutoLaw = x end
-})
+Library:OnUnload(function()
+    print("Kemu Hub Unloaded")
+end)
 
 
 -- Auto Melee
 
-idk = mltab:Toggle({
-    Title = "Auto Get SuperHuman",
-    Value = false,
-    Callback = function(x) _G.AutoSphm = x end
-})
 
-idk1 = mltab:Toggle({
-    Title = "Auto Get Death Step",
-    Value = false,
-    Callback = function(x) _G.AutoDeathStep = x end
-})
-
-idk2 = mltab:Toggle({
-    Title = "Auto Get Sharkman Karate",
-    Value = false,
-    Callback = function(x) _G.AutoSharkman = x end
-})
-
-idk3 = mltab:Toggle({
-    Title = "Auto Get Electric Claw",
-    Value = false,
-    Callback = function(x) _G.ElecClaw = x end
-})
-
-idk4 = mltab:Toggle({
-    Title = "Auto Get Dragon Talon",
-    Value = false,
-    Callback = function(x) _G.DraTalon = x end
-})
-
-idk5 = mltab:Toggle({
-    Title = "Auto Get GodHuman",
-    Value = false,
-    Callback = function(x) _G.AutoGH = x end
-})
 
 --[[spawn(function()
     while task.wait() do
@@ -4717,14 +4145,6 @@ end)
 			end            ]]
 
 
-startsea:Lock()
-idk:Lock()
-idk1:Lock()
-idk2:Lock()
-idk3:Lock()
-idk4:Lock()
-idk5:Lock()
---findprr:Lock()
-fullytrial:Lock()
+
 end
 LoadMainScript()
