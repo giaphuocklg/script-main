@@ -883,8 +883,12 @@ lp.Idled:Connect(function()
     task.wait(1)
     vused:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
 end)
-
-})
+    -- Final Startup Notification
+    Library:Notify({
+        Title = "Rise Hub",
+        Description = "Script Loaded Successfully!\nEnjoy the premium features.",
+        Duration = 5
+    })
 
 end -- End of MainScript
 
