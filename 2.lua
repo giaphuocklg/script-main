@@ -914,7 +914,20 @@ task.spawn(function()
 end)
 
 -- [[ UI INITIALIZATION (LONELY HUB) ]]
-local Library = loadstring(game:HttpGet("https://files.catbox.moe/y9pqox.lua"))()
+local Library
+local success, result = pcall(function()
+    return loadstring(game:HttpGet("https://files.catbox.moe/y9pqox.lua"))()
+end)
+
+if success and result then
+    Library = result
+else
+    -- Fallback message if UI fails
+    warn("[RISE HUB] UI Library failed to load. Check your connection to catbox.moe")
+    lp:Kick("\n[RISE HUB ERROR]\n\nUI Library (Lonely Hub) failed to load.\n\nReason: " .. tostring(result) .. "\n\nThis usually happens when files.catbox.moe is down.\nPlease try again in 5-10 minutes.")
+    return
+end
+
 local Window = Library:CreateWindow({
     Title = "Lonely Hub",
     Subtitle = " - Blox Fruit",
@@ -1603,14 +1616,7 @@ task.spawn(function()
     end
 end)
 
--- Anti-AFK (Line 2985-2991)
-lp.Idled:Connect(function()
-    local vused = game:GetService("VirtualUser")
-    vused:CaptureController()
-    vused:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
-    task.wait(1)
-    vused:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
-end)
+    -- (Consolidated into end of MainScript)
 
 -- [[ BOSS HUNTING & SPECIALIZED LOOPS (PORTED FROM NEW.LUA) ]]
 task.spawn(function()
@@ -1752,8 +1758,8 @@ end)
 
 task.spawn(function()
     while task.wait(0.5) do
-        if _G.StartMetarial and SelectMetarial then
-            local data = MatData[SelectMetarial]
+        if _G.StartMetarial and _G.SelectMetarial then
+            local data = MatData[_G.SelectMetarial]
             if data and data[1] then data = data[sea1 and 1 or (sea2 and 2 or 3)] end
             if data then
                 local mob = Check_Monster(data.mon)
