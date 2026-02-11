@@ -1813,21 +1813,40 @@ end -- End of MainScript
 -- [ AUTO START LOGIC ]
 local function StartScript()
     local key = getgenv().CheckKey
+    
     if not key or key == "" then
-        lp:Kick("\n[RISE HUB SECURITY]\n\nNO KEY PROVIDED\n\nPlease set your key before executing:\ngetgenv().CheckKey = 'YOUR-KEY'\nloadstring(game:HttpGet('...'))()")
+        lp:Kick("\n[RISE HUB SECURITY]\n\nNO KEY PROVIDED\n\nPlease set your key before executing:\n\ngetgenv().CheckKey = 'YOUR-KEY'\nloadstring(game:HttpGet('...'))()")
         return 
     end
 
     print("[RISE HUB] Authenticating...")
     local success, message = verifyKey(key)
     
-    if not success then
-        lp:Kick("\n[RISE HUB SECURITY]\n\nVERIFICATION FAILED!\n\nReason: " .. tostring(message))
-        return
+    if success then
+        print("[RISE HUB] Authenticated! Loading modules...")
+        local ok, err = pcall(MainScript)
+        if not ok then
+            warn("[RISE HUB] Critical Error during load: " .. tostring(err))
+            lp:Kick("\n[RISE HUB ERROR]\n\nAn error occurred while loading the script components.\n\nError: " .. tostring(err))
+        end
+    else
+        local lowerMsg = tostring(message):lower()
+        print("[RISE HUB] Authentication Failed: " .. tostring(message))
+        
+        if lowerMsg:find("hwid mismatch") or lowerMsg:find("another device") then
+            lp:Kick("\n[RISE HUB SECURITY]\n\nHWID MISMATCH!\n\nThis key is registered to another device.\n\nPlease reset your HWID in Discord.")
+        elseif lowerMsg:find("expired") then
+            lp:Kick("\n[RISE HUB SECURITY]\n\nKEY EXPIRED!\n\nYour subscription has ended.\nPlease purchase a new key.")
+        elseif lowerMsg:find("invalid") or lowerMsg:find("does not exist") then
+            lp:Kick("\n[RISE HUB SECURITY]\n\nINVALID KEY!\n\nThe key you entered is incorrect.")
+        elseif lowerMsg:find("blacklist") then
+            lp:Kick("\n[RISE HUB SECURITY]\n\nKEY BLACKLISTED!\n\nYou have been banned from using Rise Hub.")
+        elseif lowerMsg:find("timeout") or lowerMsg:find("connection") then
+            lp:Kick("\n[RISE HUB SECURITY]\n\nCONNECTION ERROR!\n\nServer is unreachable. Please try again in 1 minute.")
+        else
+            lp:Kick("\n[RISE HUB SECURITY]\n\nVERIFICATION FAILED!\n\nReason: " .. tostring(message))
+        end
     end
-    
-    print("[RISE HUB] Authenticated! Loading modules...")
-    MainScript()
 end
 
 StartScript()
