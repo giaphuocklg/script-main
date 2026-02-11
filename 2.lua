@@ -303,6 +303,21 @@ function Check_Monster(names)
     return target
 end
 
+local function CommF_(...)
+    local success, result = pcall(function(...)
+        return ReplicatedStorage.Remotes.CommF_:InvokeServer(...)
+    end, ...)
+    return success and result or nil
+end
+
+local function GetPlayerList()
+    local list = {}
+    for _, v in ipairs(game.Players:GetPlayers()) do
+        table.insert(list, v.Name)
+    end
+    return list
+end
+
 function Check_Inventory(name)
     local success, result = pcall(function()
         local inv = ReplicatedStorage.Remotes.CommF_:InvokeServer("getInventory")
@@ -411,7 +426,7 @@ function Attack(Mon, Statement)
     end)
 end
 
-local -- [[ FARMING CORE FUNCTIONS (PORTED FROM NEW.LUA) ]]
+-- [[ FARMING CORE FUNCTIONS (PORTED FROM NEW.LUA) ]]
 local qu_md = nil
 pcall(function() qu_md = require(game:GetService("ReplicatedStorage"):WaitForChild("Quests")) end)
 
@@ -1589,6 +1604,14 @@ task.spawn(function()
 end)
 
 -- Anti-AFK (Line 2985-2991)
+lp.Idled:Connect(function()
+    local vused = game:GetService("VirtualUser")
+    vused:CaptureController()
+    vused:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+    task.wait(1)
+    vused:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+end)
+
 -- [[ BOSS HUNTING & SPECIALIZED LOOPS (PORTED FROM NEW.LUA) ]]
 task.spawn(function()
     while task.wait() do
