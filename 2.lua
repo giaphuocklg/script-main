@@ -115,7 +115,7 @@ end
 
 safe_it(md)
 bf_md = safe_it(md)
-notifyrise = safe_it(lib1)
+notifykemu = safe_it(lib1)
 lib2 = safe_it(hopui)
 network = safe_it(netw)
 hui = safe_it(lib2)
@@ -242,8 +242,8 @@ table.sort(AvailableIslands)
 print("pass")
 
 function say(mo, ok, howlong)
-    if notifyrise and notifyrise.Notify then
-        notifyrise.Notify(mo or "SYSTEM", ok, howlong or 5)
+    if notifykemu and notifykemu.Notify then
+        notifykemu.Notify(mo or "SYSTEM", ok, howlong or 5)
     else
         print("delete hub pls" .. tostring(ok))
     end
@@ -348,8 +348,8 @@ _G.LoadSetting = function()
 end]]
 
 local HttpService = game:GetService("HttpService")
-local folderMain = "Rise Evo"
-local folderSub = "Rise Evo/lpdata"
+local folderMain = "Kemu Hub"
+local folderSub = "Kemu Hub/lpdata"
 local fileName = folderSub .. "/" .. lp.Name .. "_data.json"
 if not isfolder(folderMain) then makefolder(folderMain) end
 if not isfolder(folderSub) then makefolder(folderSub) end
@@ -902,8 +902,8 @@ runse.Heartbeat:Connect(function(dt)
         for _, v in pairs(char:GetDescendants()) do
             if v:IsA("BasePart") then v.CanCollide = false end
         end
-        local bv = root:FindFirstChild("risefanboi") or Instance.new("BodyVelocity")
-        bv.Name = "risefanboi"
+        local bv = root:FindFirstChild("kemufanboi") or Instance.new("BodyVelocity")
+        bv.Name = "kemufanboi"
         bv.MaxForce = Vector3.new(1e6, 1e6, 1e6)
         bv.Velocity = Vector3.new(0, 0, 0)
         bv.Parent = root
@@ -911,7 +911,7 @@ runse.Heartbeat:Connect(function(dt)
         if hum then
             hum.PlatformStand = false
             hum.AutoRotate = true
-            local bv = root and root:FindFirstChild("risefanboi")
+            local bv = root and root:FindFirstChild("kemufanboi")
             if bv then bv:Destroy() end
         end
     end
@@ -2016,14 +2016,14 @@ local function AddEsp(BoatModel)
     local container = Instance.new("Frame")
     container.Name = "Container"
     container.Size = UDim2.new(1, 0, 1, 0)
-    container.BackgroundColor3 = RISE_THEME.BgColor
+    container.BackgroundColor3 = KEMU_THEME.BgColor
     container.BackgroundTransparency = 0.3
     container.Parent = bg
     local uiCorner = Instance.new("UICorner")
     uiCorner.CornerRadius = UDim.new(0, 6)
     uiCorner.Parent = container
     local uiStroke = Instance.new("UIStroke")
-    uiStroke.Color = RISE_THEME.StrokeColor
+    uiStroke.Color = KEMU_THEME.StrokeColor
     uiStroke.Thickness = 1.5
     uiStroke.Parent = container
     local strokeGrad = Instance.new("UIGradient")
@@ -2038,8 +2038,8 @@ local function AddEsp(BoatModel)
     nameLabel.Position = UDim2.new(0, 0, 0, 5)
     nameLabel.BackgroundTransparency = 1
     nameLabel.Text = string.upper(BoatModel.Name)
-    nameLabel.TextColor3 = RISE_THEME.TextColor
-    nameLabel.Font = RISE_THEME.TextFont
+    nameLabel.TextColor3 = KEMU_THEME.TextColor
+    nameLabel.Font = KEMU_THEME.TextFont
     nameLabel.TextSize = 14
     nameLabel.Parent = container
     local distLabel = Instance.new("TextLabel")
@@ -2065,7 +2065,7 @@ local function AddEsp(BoatModel)
     local barFill = Instance.new("Frame")
     barFill.Name = "HealthFill"
     barFill.Size = UDim2.new(1, 0, 1, 0)
-    barFill.BackgroundColor3 = RISE_THEME.AccentColor
+    barFill.BackgroundColor3 = KEMU_THEME.AccentColor
     barFill.BorderSizePixel = 0
     barFill.Parent = barBg 
     local fillCorner = Instance.new("UICorner")
@@ -2085,7 +2085,7 @@ local function AddEsp(BoatModel)
         if percent < 0.3 then
             barFill.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
         else
-            barFill.BackgroundColor3 = RISE_THEME.AccentColor
+            barFill.BackgroundColor3 = KEMU_THEME.AccentColor
         end
         if lp.Character and lp.Character:FindFirstChild("HumanoidRootPart") then
             local dist = (BoatModel.PrimaryPart.Position - lp.Character.HumanoidRootPart.Position).Magnitude
@@ -2343,9 +2343,9 @@ end)
 
 
 local function CreateESP(parent, name, color, offset)
-    if parent:FindFirstChild("nigga") then return parent.nigga.TextLabel end
+    if parent:FindFirstChild("KemuESPLabel") then return parent.KemuESPLabel.TextLabel end
     local bill = Instance.new("BillboardGui", parent)
-    bill.Name = "nigga"
+    bill.Name = "KemuESPLabel"
     bill.Size = UDim2.new(0, 200, 0, 50)
     bill.Adornee = parent
     bill.AlwaysOnTop = true
@@ -2367,7 +2367,7 @@ task.spawn(function()
                 local label = CreateESP(v.Character.Head, v.Name, v.Team == lp.Team and Color3.new(0,1,0) or Color3.new(1,0,0))
                 local dist = math.round((lp.Character.Head.Position - v.Character.Head.Position).Magnitude)
                 label.Text = string.format("%s\n[%d HP] - %dm", v.Name, math.round(v.Character.Humanoid.Health), dist)
-            elseif v.Character and v.Character.Head:FindFirstChild("nigga") then v.Character.Head.nigga:Destroy() end
+            elseif v.Character and v.Character.Head:FindFirstChild("KemuESPLabel") then v.Character.Head.KemuESPLabel:Destroy() end
         end
         if _G.ESPChest and workspace:FindFirstChild("ChestModels") then
             for _, v in ipairs(workspace.ChestModels:GetChildren()) do
@@ -2378,7 +2378,7 @@ task.spawn(function()
                 end
             end
         else
-            for _, v in ipairs(workspace.ChestModels:GetChildren()) do if v:FindFirstChild("nigga") then v.nigga:Destroy() end end
+            for _, v in ipairs(workspace.ChestModels:GetChildren()) do if v:FindFirstChild("KemuESPLabel") then v.KemuESPLabel:Destroy() end end
         end
         if _G.ESPFruit then
             for _, v in ipairs(workspace:GetChildren()) do
@@ -2882,8 +2882,8 @@ if _G.FastAttack then
     local Module = {}
 
     Module.FastAttack = (function()
-        if _ENV.rz_FastAttack then
-            return _ENV.rz_FastAttack
+        if _ENV.km_FastAttack then
+            return _ENV.km_FastAttack
         end
 
         local FastAttack = {
@@ -2965,7 +2965,7 @@ if _G.FastAttack then
             end
         end)
 
-        _ENV.rz_FastAttack = FastAttack
+        _ENV.km_FastAttack = FastAttack
         return FastAttack
     end)()
 end
@@ -3149,9 +3149,6 @@ WeaponSection:AddButton({
 })
 
 local SettingTab = Window:AddTab("Setting Farm")
-local FarmSetup = SettingTab:AddLeftGroupbox("Farming Configuration")
-
-
 local FarmConfig = SettingTab:AddLeftGroupbox("Farming Configuration")
 FarmConfig:AddToggle("UseSword", {
     Title = "Use Sword",
