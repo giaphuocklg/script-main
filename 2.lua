@@ -92,7 +92,7 @@ for i, v in pairs(LocalPlayer.PlayerGui:GetChildren()) do
     end
 end
 
-local lib1 = "https://rise-evo.xyz/apiv3/NotifyLib.lua"
+
 local hopui = "https://rise-evo.xyz/apiv3/HopUi.lua"
 local md = "https://rise-evo.xyz/apiv3/module-bf.lua"
 local ex1 = "https://rise-evo.xyz/apiv3/lib_1click.lua"
@@ -115,7 +115,7 @@ end
 
 safe_it(md)
 bf_md = safe_it(md)
-notifykemu = safe_it(lib1)
+
 lib2 = safe_it(hopui)
 network = safe_it(netw)
 hui = safe_it(lib2)
@@ -241,14 +241,7 @@ table.sort(AvailableIslands)
 
 print("pass")
 
-function say(mo, ok, howlong)
-    if notifykemu and notifykemu.Notify then
-        notifykemu.Notify(mo or "SYSTEM", ok, howlong or 5)
-    else
-        print("delete hub pls" .. tostring(ok))
-    end
-end
-say("SYSTEM", "Inlitizing.....", 5)--test
+
 
 --[[rejoin = function()
     game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId,game.JobId,lp)
@@ -2103,7 +2096,7 @@ task.spawn(function()
                 TP(CFrame.new(-5256, 16, 8))
                 fireclickdetector(workspace.Map.Waterfall.SealedKatana.Handle.ClickDetector)
             else
-                say("SYSTEM", "TOTAL KILL < 30 PLZ FARM ELITE", 1)--test
+                print("TOTAL KILL < 30 PLZ FARM ELITE")
             end
         end
     end
@@ -2430,7 +2423,7 @@ function collectchest()
 		wait()
 		game:service("VirtualInputManager"):SendKeyEvent(false, "Q", false, game)
 	else
-		say("SYSTEM", "Wait Chest Respawn...", 2)
+		print("Wait Chest Respawn...")
 	end
 end
 
@@ -2464,7 +2457,7 @@ task.spawn(function()
                         collectchest()
                     elseif race:find("Cyborg") then
                         if not Check_Inventory("Blox Fruit") then
-                            say("SYSTEM", "Need any fruit in inventory!", 2)
+                            print("Need any fruit in inventory!")
                         else
                             CommF_("Wenlocktoad", "3")
                         end
@@ -2494,12 +2487,12 @@ task.spawn(function()
             local hasFractal = Check_Inventory("Mirror Fractal")
             local hasValkyrie = Check_Inventory("Valkyrie Helm")
             if not hasFractal or not hasValkyrie then
-                say("SYSTEM", "Need Mirror Fractal and Valkyrie Helm!", 2)
+                print("Need Mirror Fractal and Valkyrie Helm!")
             elseif mirage then
                 local gear = GetBlueGear()
                 if gear and gear.Transparency == 0 then
                     TP(gear.CFrame)
-                    say("SYSTEM", "Found Blue Gear! Teleporting...", 2)
+                    print("Found Blue Gear! Teleporting...")
                 else
                     TP(mirage.CFrame * CFrame.new(0, 400, 0))
                     if game.Lighting.ClockTime < 5 or game.Lighting.ClockTime > 18 then
@@ -2510,11 +2503,11 @@ task.spawn(function()
                         lp.Character.HumanoidRootPart.CFrame = CFrame.lookAt(lp.Character.HumanoidRootPart.Position, lookPos)
                         game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("ActivateAbility")
                     else
-                        say("SYSTEM", "Waiting for Night to look Moon...", 2)
+                        print("Waiting for Night to look Moon...")
                     end
                 end
             else
-                say("SYSTEM", "Waiting for Mirage Island to spawn...", 2)
+                print("Waiting for Mirage Island to spawn...")
             end
         else
             if lp.Character and lp.Character:FindFirstChild("Humanoid") then
@@ -2531,7 +2524,7 @@ task.spawn(function()
             if mirage then
                 TP(mirage.CFrame * CFrame.new(0, 300, 0))
             else
-                say("SYSTEM", "Mirage Island not found yet...", 1)
+                print("Mirage Island not found yet...")
             end
         end
     end
